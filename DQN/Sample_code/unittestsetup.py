@@ -6,6 +6,7 @@ Created on 2 Jun 2016
 """ initialization of unittests and data for unittests """
 
 import time
+from utility.accountInfo import getInfo as gi
 environment = "practice"
 
 # calculate expiryDate as an offset from today
@@ -58,12 +59,15 @@ orders = {
 
 
 def auth():
-    access_token = None
-    account = None
-    with open("account.txt") as T:
-        account = T.read().strip()
-    with open("token.txt") as T:
-        access_token = T.read().strip()
+    access_token = gi().get_token().strip()
+    account = gi().get_account_id()
+    
+    #===========================================================================
+    # with open("account.txt") as T:
+    #     account = T.read().strip()
+    # with open("token.txt") as T:
+    #     access_token = T.read().strip()
+    #===========================================================================
 
     if account == "9999999":
         raise Exception(

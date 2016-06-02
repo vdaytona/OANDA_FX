@@ -70,8 +70,7 @@ class TestRates(unittest.TestCase):
                    count=count)
         r.start(accountId=account, ignore_heartbeat=ignore_heartbeat,
                 instruments=",".join(instruments))
-        print r.reccnt
-        print r.hbcnt
+        
         if ignore_heartbeat:
             self.assertEqual(count, r.reccnt)
         else:
