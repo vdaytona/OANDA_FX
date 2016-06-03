@@ -5,7 +5,10 @@ Created on 2 Jun 2016
 '''
 
 import oandapy
+import datetime
 from utility.accountInfo import getInfo as gi
+from utility import stream_decode as sd
+import json
 
 class MyStreamer(oandapy.Streamer):
     def __init__(self, count=100, *args, **kwargs):
@@ -14,7 +17,8 @@ class MyStreamer(oandapy.Streamer):
         self.reccnt = 0
 
     def on_success(self, data):
-        print data, "\n"
+        print data
+        print sd.time(data)
         self.reccnt += 1
         if self.reccnt == self.count:
             self.disconnect()
@@ -25,13 +29,6 @@ class MyStreamer(oandapy.Streamer):
 def run():
     token = gi().get_token()
     account_id = gi().get_account_id()
-    
-    #print token
-    #oanda = oandapy.API(environment="practice", access_token=token)
-    #response = oanda.get_prices(instruments = "EUR_USD")
-    #prices = response.get("prices")
-    #asking_price = prices[0].get("ask")
-    #print asking_price
     
     account = account_id
     
