@@ -34,6 +34,8 @@ def run():
     
     stream = MyStreamer(environment="practice", access_token=token)
     stream.rates(account, instruments="GBP_USD",ignore_heartbeat=True)
+    
+    print "finished"
 
 if __name__ == '__main__':
     run()
