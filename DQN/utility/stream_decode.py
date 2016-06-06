@@ -21,4 +21,7 @@ def time(stream_input):
     time_str = stream_input["tick"]["time"]
     time_str = dt.strptime(time_str[:time_str.index(".")], '%Y-%m-%dT%H:%M:%S')
     return time_str
-        
+
+def timeRFC(time_rfc):
+    time_str = dt.strptime(time_rfc[:time_rfc.index(".")], '%Y-%m-%dT%H:%M:%S')
+    return time_str
