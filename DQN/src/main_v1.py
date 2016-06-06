@@ -3,11 +3,12 @@ Created on 3 Jun 2016
 
 @author: purewin7
 '''
-import sys
-sys.path.append("~/git/OANDA_FX/")
+#import platform as pl
+#import sys
+#sys.path.append("~/git/OANDA_FX/DQN/src")
 from utility.accountInfo import getInfo as gi
 import oandapy
-from src import dqn_agent_v1
+import dqn_agent_v1
 from oandapy.stream.stream import StreamerError
 import utility.historical_data_download as hd
 
