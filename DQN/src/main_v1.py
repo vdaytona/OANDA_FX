@@ -3,7 +3,8 @@ Created on 3 Jun 2016
 
 @author: purewin7
 '''
-
+import sys
+sys.path.append("~/git/OANDA_FX/")
 from utility.accountInfo import getInfo as gi
 import oandapy
 from src import dqn_agent_v1
@@ -11,7 +12,7 @@ from oandapy.stream.stream import StreamerError
 import utility.historical_data_download as hd
 
 class MyStreamer(oandapy.Streamer):
-    def __init__(self, agent = None, oanda = None, account_id = None, count=1 , *args, **kwargs):
+    def __init__(self, agent = None, oanda = None, account_id = None, count=1000000000 , *args, **kwargs):
         super(MyStreamer, self).__init__(*args, **kwargs)
         self.count = count
         self.reccnt = 0

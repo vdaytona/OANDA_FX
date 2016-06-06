@@ -4,13 +4,13 @@ v1 : DQN agent used to trade fx
 @author: purewin7
 '''
 
+
 import utility.stream_decode as sd
 import datetime as dt
 import pandas as pd
 from keras.models import model_from_json
 import json
 import numpy as np
-
 import utility.historical_data_download as hd
 
 
@@ -39,6 +39,7 @@ class agent():
         self.side = self.get_side()
         self.last_trading_hour = self.get_last_trading_hour()
         self.next_trading_hour = self.get_next_trading_hour()
+        self.time = None
         
         
         print ("new DQN agent created!!")
@@ -91,7 +92,7 @@ class agent():
         print "Update the historical data at " + candle_time + " ."
     
     def build_model(self):
-        model_name = "../model/DRL_model_v7_1"
+        model_name = "../model/DRL_model_v7_2016-06-06-05-39-06"
         with open(model_name+ ".json", "r") as jfile:
             model = model_from_json(json.load(jfile))
         model.load_weights(model_name + ".h5")
@@ -130,12 +131,15 @@ class agent():
         return result
     
     def feed(self,data):
+        self.time = dt.datetime.strptime(str(sd.time(data)),"%Y-%m-%d %H:%M:%S")
+        
         # check the balance
         #print self.oanda.get_account(self.account_id)
         
         # check the time if is the point to update csv
+        
         if self.check_update_time(data) :
-            hour_server = dt.datetime.strptime(str(sd.time(data)),"%Y-%m-%d %H:%M:%S").hour
+            hour_server = self.time.hour
             if hour_server == self.next_trading_hour : # not consider the end of week
                 # update csv
                 self.update_his_data_csv()
@@ -154,24 +158,25 @@ class agent():
                 
                 # update order id
                 self.update_order_id()
-        
-        print "Agent got new ask price : " + str(sd.ask(data)) + " at " + \
-        str(sd.time(data)) + " (NewYork Time), next trading hour is at " + str(self.next_trading_hour) + ":00"
+        if np.random.randint(10) == 1 :
+            print "Agent got new ask price : " + str(sd.ask(data)) + " at " + \
+            str(sd.time(data)) + " (NewYork Time), next trading hour is at " + str(self.next_trading_hour) + ":00"
         
     def trade(self,action,data):
-        # 1. if next action same, do nothing
+        
         side = self.ACTION_LIST[action]
-        # close present position 
+        # if next action same, do nothing
+        # close present trade if need to change trade
         if self.side is not "no_trade" and self.side != side:
             self.close_trade()
             print ("Close " + self.pair + " trade at") # TODO
-        # close trade if have to change position
+        # open new trade
         if self.side != side and action != 1 :
             margin_avail = self.oanda.get_account(self.account_id).get('marginAvail')
             investment = self.leverage * margin_avail
             price = self.get_last_closebid()
             side = self.ACTION_LIST[action]
-            expirDate = dt.datetime.strptime(str(sd.time(data)),"%Y-%m-%d %H:%M:%S") + dt.timedelta(minutes = 30)
+            expirDate = self.time+ dt.timedelta(minutes = 30)
             expirDate = expirDate.strftime("%Y-%m-%dT%H:%M:%S")
             #self.oanda.create_order(account_id = self.account_id, instrument = "GBP_USD", \
             #                        units = int (investment / price), side = side, type = "limit", price = price, expiry = expirDate)
