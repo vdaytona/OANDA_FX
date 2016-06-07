@@ -160,7 +160,7 @@ class agent():
                 self.update_order_id()
         if np.random.randint(10) == 1 :
             print "Agent got new ask price : " + str(sd.ask(data)) + " at " + \
-            str(sd.time(data)) + " (NewYork Time), next trading hour is at " + str(self.next_trading_hour) + ":00"
+            str(sd.time(data)) + " (GMT Time), next trading hour is at " + str(self.next_trading_hour) + ":00"
         
     def trade(self,action,data):
         
