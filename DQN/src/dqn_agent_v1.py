@@ -92,7 +92,7 @@ class agent():
         print "Update the historical data at " + candle_time + " ."
     
     def build_model(self):
-        model_name = "../model/DRL_model_v7_2016-06-06-05-39-06"
+        model_name = "../model/DRL_model_oanda_v7_11"
         with open(model_name+ ".json", "r") as jfile:
             model = model_from_json(json.load(jfile))
         model.load_weights(model_name + ".h5")
@@ -165,6 +165,8 @@ class agent():
     def trade(self,action,data):
         
         side = self.ACTION_LIST[action]
+        print "Previous side : " + self.side
+        print "Next side : " + side
         # if next action same, do nothing
         # close present trade if need to change trade
         if self.side is not "no_trade" and self.side != side:
