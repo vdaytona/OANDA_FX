@@ -144,20 +144,25 @@ class agent():
                 # update csv
                 self.update_his_data_csv()
                 
-                # get state as model input
-                state = self.get_state()
+                # check if csv has been successfully updated by comparing last hour to hour_server
+                csv_hour = self.get_last_trading_hour()
                 
-                # action 
-                action = np.argmax(self.model.predict(state))
-                
-                # trade
-                self.trade(action,data)
-                
-                # update next trading hour
-                self.update_trading_hour()
-                
-                # update order id
-                self.update_order_id()
+                if csv_hour == hour_server :
+                    # get state as model input
+                    state = self.get_state()
+                    
+                    # action 
+                    action = np.argmax(self.model.predict(state))
+                    
+                    # trade
+                    self.trade(action,data)
+                    
+                    # update next trading hour
+                    self.update_trading_hour()
+                    
+                    # update order id
+                    self.update_order_id()
+        
         if np.random.randint(10) == 1 :
             print "Agent got new ask price : " + str(sd.ask(data)) + " at " + \
             str(sd.time(data)) + " (GMT Time), next trading hour is at " + str(self.next_trading_hour) + ":00"

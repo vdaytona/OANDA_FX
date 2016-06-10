@@ -1,5 +1,6 @@
 '''
 Created on 3 Jun 2016
+v1 : main code for runing automatic trading system on Oanda using DDQN agent
 
 @author: purewin7
 '''
