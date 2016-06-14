@@ -92,7 +92,7 @@ class agent():
         print "Update the historical data at " + candle_time + " ."
     
     def build_model(self):
-        model_name = "../model/DRL_model_oanda_v7_18"
+        model_name = "../model/DRL_model_oanda_v7_17"
         with open(model_name+ ".json", "r") as jfile:
             model = model_from_json(json.load(jfile))
         model.load_weights(model_name + ".h5")
