@@ -130,6 +130,14 @@ class agent():
         result = minute >= 0 and minute < 2
         return result
     
+    def decide_action(self, state):
+        q_value = self.model.predict(state)
+        if abs(q_value[0] - q_value[2]) >= 0.002 :
+            return np.argmax(q_value)
+        else :
+            return 1
+        
+    
     def feed(self,data):
         self.time = dt.datetime.strptime(str(sd.time(data)),"%Y-%m-%d %H:%M:%S")
         
@@ -152,7 +160,8 @@ class agent():
                     state = self.get_state()
                     
                     # action 
-                    action = np.argmax(self.model.predict(state))
+                    #action = np.argmax(self.model.predict(state))
+                    action = self.decide_action(state)
                     
                     # trade
                     self.trade(action,data)
