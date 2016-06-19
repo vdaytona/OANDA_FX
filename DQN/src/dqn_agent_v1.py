@@ -132,6 +132,7 @@ class agent():
     
     def decide_action(self, state):
         q_value = self.model.predict(state)
+        print q_value
         if abs(q_value[0] - q_value[2]) >= 0.002 :
             return np.argmax(q_value)
         else :
